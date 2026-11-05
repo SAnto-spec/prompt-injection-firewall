@@ -9,17 +9,6 @@
 ██║ ╚████║╚██████╔╝   ██║      ███████║██║  ██║██║ ╚████║██████╔╝██████╔╝╚██████╔╝██╔╝ ██╗███████╗██████╔╝
 ╚═╝  ╚═══╝ ╚═════╝    ╚═╝      ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═════╝
 ```
-
-[![Cybersecurity Projects](https://img.shields.io/badge/Cybersecurity--Projects-Project%20%2342-red?style=flat&logo=github)](https://github.com/CarterPerez-dev/Cybersecurity-Projects/tree/main/PROJECTS/beginner/prompt-injection-firewall)
-[![Python](https://img.shields.io/badge/Python-3.14-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)](https://www.docker.com)
-[![OWASP](https://img.shields.io/badge/OWASP-LLM01%3A2025-000000?style=flat)](https://genai.owasp.org)
-[![Layers](https://img.shields.io/badge/layers-4%20invariant%20%2B%201%20scored-6D4AFF?style=flat)](#the-five-layers)
-[![Detection](https://img.shields.io/badge/detection-100%25%20%2F%2012%20classes-4457E8?style=flat)](#the-numbers-and-what-they-are-worth)
-[![False positives](https://img.shields.io/badge/hard--benign%20FPR-5.0%25-orange?style=flat)](#the-numbers-and-what-they-are-worth)
-[![Tests](https://img.shields.io/badge/tests-314-8B5CF6?style=flat)](#build-and-test)
-[![License: AGPLv3](https://img.shields.io/badge/License-AGPL_v3-purple.svg)](https://www.gnu.org/licenses/agpl-3.0)
-
 ---
 [![Website Demo](https://img.shields.io/badge/website-notsandboxed%2Ecom-008000?style=flat)](https://notsandboxed.com)
 
