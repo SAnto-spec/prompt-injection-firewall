@@ -156,6 +156,18 @@ ARENA_ANONYMOUS_CLIENT: Final = "anonymous"
 ARENA_AUDIT_PATH_VAR: Final = "NS_AUDIT_PATH"
 PROXY_AUDIT_PATH_VAR: Final = "NS_PROXY_AUDIT_PATH"
 ARENA_BYPASS_PATH_VAR: Final = "NS_BYPASS_PATH"
+ARENA_CORS_ORIGINS_VAR: Final = "NS_CORS_ORIGINS"
+ARENA_CORS_ORIGIN_REGEX: Final = r"^https?://(?:localhost|127\.0\.0\.1)(?::\d+)?$"
+ARENA_DEFAULT_CORS_ORIGINS: Final = (
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:4173",
+    "http://127.0.0.1:4173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+)
 
 ARENA_FIRST_LEVEL: Final = 1
 ARENA_LAST_LEVEL: Final = 6

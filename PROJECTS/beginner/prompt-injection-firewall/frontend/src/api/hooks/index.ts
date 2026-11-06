@@ -4,6 +4,7 @@
 // ===================
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
 import {
   type AttemptRequest,
   type AttemptResponse,
@@ -25,7 +26,7 @@ import {
 import { apiClient } from '@/core/api'
 import { ApiError } from '@/core/api/errors'
 
-const readStoredSession = (): SessionResponse | null => {
+export const readStoredSession = (): SessionResponse | null => {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEYS.SESSION)
     return raw === null ? null : sessionResponseSchema.parse(JSON.parse(raw))
@@ -34,7 +35,7 @@ const readStoredSession = (): SessionResponse | null => {
   }
 }
 
-const writeStoredSession = (session: SessionResponse): void => {
+export const writeStoredSession = (session: SessionResponse): void => {
   try {
     window.localStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(session))
   } catch {
@@ -42,7 +43,7 @@ const writeStoredSession = (session: SessionResponse): void => {
   }
 }
 
-const clearStoredSession = (): void => {
+export const clearStoredSession = (): void => {
   try {
     window.localStorage.removeItem(STORAGE_KEYS.SESSION)
   } catch {
@@ -86,10 +87,15 @@ export const useSession = () =>
         return stored
       }
 
-      const { data } = await apiClient.post(API_ENDPOINTS.ARENA.SESSION)
-      const parsed = sessionResponseSchema.parse(data)
-      writeStoredSession(parsed)
-      return parsed
+      try {
+        const { data } = await apiClient.post(API_ENDPOINTS.ARENA.SESSION)
+        const parsed = sessionResponseSchema.parse(data)
+        writeStoredSession(parsed)
+        return parsed
+      } catch (error) {
+        clearStoredSession()
+        throw error
+      }
     },
   })
 
@@ -103,11 +109,14 @@ export const useAttempt = () => {
       return attemptResponseSchema.parse(data)
     },
     onError: (error) => {
-      if (
-        error instanceof ApiError &&
-        error.statusCode === HTTP_STATUS.NOT_FOUND
-      ) {
+      const isNotFound =
+        (error instanceof ApiError &&
+          error.statusCode === HTTP_STATUS.NOT_FOUND) ||
+        (axios.isAxiosError(error) &&
+          error.response?.status === HTTP_STATUS.NOT_FOUND)
+      if (isNotFound) {
         clearStoredSession()
+        void client.invalidateQueries({ queryKey: QUERY_KEYS.SESSION })
         void client.refetchQueries({ queryKey: QUERY_KEYS.SESSION })
       }
     },

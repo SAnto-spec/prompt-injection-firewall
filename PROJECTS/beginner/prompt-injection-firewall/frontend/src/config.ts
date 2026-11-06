@@ -119,8 +119,8 @@ export const CENSUS_MARKS = {
 export type CensusMark = (typeof CENSUS_MARKS)[keyof typeof CENSUS_MARKS]
 
 export const COPY = {
-  TITLE: 'not-sandboxed',
-  TAGLINE: 'the model is not sandboxed, so the effects are',
+  TITLE: 'INJECTRA',
+  TAGLINE: 'AI Prompt Injection Defense Firewall',
   UNIT_ID: 'unit id / ns-06',
   UNIT_ROLE: 'prompt injection firewall',
   NODE: 'support desk agent',
@@ -132,6 +132,9 @@ export const COPY = {
   FOOTER_MARK: 'angelamos — 2026',
   SESSION_LABEL: 'session',
   SESSION_PENDING: 'opening',
+  SESSION_ERROR: 'failed',
+  SESSION_INIT_FAILED: 'Failed to initialize session.',
+  RETRY: 'Retry',
   SECRET_LABEL_SHORT: 'secret held',
   SECRET_UNIT: 'chars',
   CONFIG_LABEL: 'configurations',

@@ -4,6 +4,7 @@
 // ===================
 
 import axios, { type AxiosInstance } from 'axios'
+import { transformAxiosError } from './errors'
 
 const getBaseURL = (): string => {
   return import.meta.env.VITE_API_URL ?? '/api'
@@ -15,3 +16,8 @@ export const apiClient: AxiosInstance = axios.create({
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 })
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error: unknown) => Promise.reject(transformAxiosError(error))
+)

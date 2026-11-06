@@ -10,6 +10,10 @@
 ╚═╝  ╚═══╝ ╚═════╝    ╚═╝      ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═════╝
 ```
 
+# INJECTRA
+
+AI Prompt Injection Defense Firewall
+
 [![Cybersecurity Projects](https://img.shields.io/badge/Cybersecurity--Projects-Project%20%2342-red?style=flat&logo=github)](https://github.com/CarterPerez-dev/Cybersecurity-Projects/tree/main/PROJECTS/beginner/prompt-injection-firewall)
 [![Python](https://img.shields.io/badge/Python-3.14-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)](https://www.docker.com)
@@ -21,7 +25,7 @@
 [![License: AGPLv3](https://img.shields.io/badge/License-AGPL_v3-purple.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 ---
-[![Website Demo](https://img.shields.io/badge/website-notsandboxed%2Ecom-008000?style=flat)](https://notsandboxed.com)
+[![Website Demo](https://img.shields.io/badge/website-INJECTRA-008000?style=flat)](https://notsandboxed.com)
 
 > A prompt injection firewall that gives up on reading the attacker's mind and enforces structure around the model instead. Untrusted text is fenced behind a per-request nonce it cannot guess, the model's tool calls are authorized by the firewall rather than requested-and-granted, and registered secrets are matched on the way out through a closure over every reversible encoding. Text inspection ships too, scored and labelled best-effort, because it catches the copy-pasted eighty percent. It runs keyless and offline, ships an OpenAI-compatible proxy, and includes a six-level arena where each level is a firewall configuration so you can feel which layer stopped you.
 
@@ -37,7 +41,7 @@ So this takes the other position. **The model is untrusted, and the firewall enf
 - the model requests actions, the firewall authorizes them
 - registered secrets do not leave, in any encoding
 
-The name states the thesis. The LLM is not sandboxed. So you sandbox the effects.
+INJECTRA defends against prompt injection by sandboxing the effects.
 
 Text inspection still ships, because raising the cost of the easy attack is worth doing. It is one layer out of five, it is the only one that can be wrong about a payload, and it is labelled `invariant=False` in the code, reported separately in the benchmark, and described as incomplete in these docs. That labelling is the point. A firewall that cannot tell you which of its guarantees are structural and which are guesses is selling you the guess.
 

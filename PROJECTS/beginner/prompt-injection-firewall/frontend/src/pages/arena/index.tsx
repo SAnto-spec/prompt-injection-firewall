@@ -5,7 +5,13 @@
 
 import { useMemo, useState } from 'react'
 
-import { useAttempt, useCodepoints, useLevels, useSession } from '@/api/hooks'
+import {
+  clearStoredSession,
+  useAttempt,
+  useCodepoints,
+  useLevels,
+  useSession,
+} from '@/api/hooks'
 import type { AttemptResponse, Finding, Level } from '@/api/types'
 import {
   ARENA,
@@ -364,14 +370,16 @@ export function Component(): React.ReactElement {
             <dt className={styles.metaKey}>{COPY.SESSION_LABEL}</dt>
             <dd className={styles.metaValue}>
               {session.data?.session_id.slice(0, SESSION_ID_HEAD) ??
-                COPY.SESSION_PENDING}
+                (session.isError ? COPY.SESSION_ERROR : COPY.SESSION_PENDING)}
             </dd>
           </div>
           <div className={styles.metaRow}>
             <dt className={styles.metaKey}>{COPY.SECRET_LABEL_SHORT}</dt>
             <dd className={styles.metaValue}>
               {session.data === undefined
-                ? COPY.SESSION_PENDING
+                ? session.isError
+                  ? COPY.SESSION_ERROR
+                  : COPY.SESSION_PENDING
                 : `${session.data.secret_length} ${COPY.SECRET_UNIT}`}
             </dd>
           </div>
@@ -433,6 +441,37 @@ export function Component(): React.ReactElement {
       </form>
 
       <Specimen ticket={ticket} sets={codepoints.data ?? FALLBACK_CODEPOINTS} />
+
+      {session.isError && (
+        <div
+          className={styles.error}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <span>
+            {session.error instanceof ApiError
+              ? session.error.getUserMessage()
+              : COPY.SESSION_INIT_FAILED}
+          </span>
+          <button
+            type="button"
+            className={styles.ghostButton}
+            style={{
+              color: 'inherit',
+              borderColor: 'currentColor',
+            }}
+            onClick={() => {
+              clearStoredSession()
+              void session.refetch()
+            }}
+          >
+            {COPY.RETRY}
+          </button>
+        </div>
+      )}
 
       {attempt.isError && (
         <p className={styles.error}>{attemptMessage(attempt.error)}</p>

@@ -3,9 +3,11 @@
 app.py
 """
 
+import os
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from not_sandboxed import config
@@ -220,7 +222,26 @@ def build_arena(
     Build the arena, where each level is a firewall configuration and
     every verdict names the rule that produced it
     """
-    app = FastAPI(title = "not-sandboxed arena")
+    app = FastAPI(title = "INJECTRA")
+
+    cors_origins_env = os.environ.get(config.ARENA_CORS_ORIGINS_VAR, "")
+    configured_origins = [
+        origin.strip()
+        for origin in cors_origins_env.split(",")
+        if origin.strip()
+    ]
+    origins = configured_origins or list(config.ARENA_DEFAULT_CORS_ORIGINS)
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins = origins,
+        allow_origin_regex = config.ARENA_CORS_ORIGIN_REGEX,
+        allow_credentials = True,
+        allow_methods = ["*"],
+        allow_headers = ["*"],
+        allow_private_network = True,
+    )
+
     sessions = store or SessionStore()
     log = audit or audit_log_from_env(config.ARENA_AUDIT_PATH_VAR)
     won = bypasses or bypass_log_from_env(config.ARENA_BYPASS_PATH_VAR)

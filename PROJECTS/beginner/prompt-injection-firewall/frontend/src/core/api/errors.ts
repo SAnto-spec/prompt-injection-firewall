@@ -65,13 +65,20 @@ interface ApiErrorResponse {
   message?: string
 }
 
-export function transformAxiosError(error: AxiosError<unknown>): ApiError {
-  if (!error.response) {
-    return new ApiError('Network error', ApiErrorCode.NETWORK_ERROR, 0)
+export function transformAxiosError(error: unknown): ApiError {
+  if (error instanceof ApiError) {
+    return error
   }
 
-  const { status } = error.response
-  const data = error.response.data as ApiErrorResponse | undefined
+  const axiosError = error as AxiosError<unknown> | undefined
+  if (!axiosError?.response) {
+    const fallbackMessage =
+      error instanceof Error ? error.message : 'Network error'
+    return new ApiError(fallbackMessage, ApiErrorCode.NETWORK_ERROR, 0)
+  }
+
+  const { status } = axiosError.response
+  const data = axiosError.response.data as ApiErrorResponse | undefined
   let message = 'An error occurred'
   let details: Record<string, string[]> | undefined
 

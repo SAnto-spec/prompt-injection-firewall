@@ -592,3 +592,83 @@ def test_harvest_refuses_the_benign_corpus_too(
 ) -> None:
     with pytest.raises(HarvestRefusedError):
         harvest(["payload"], tmp_path / "benign")
+
+
+def test_cors_preflight_for_frontend_origin() -> None:
+    client = _client()
+    response = client.options(
+        "/api/session",
+        headers = {
+            "Origin": "http://localhost:5173",
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "content-type",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"
+                            ] == "http://localhost:5173"
+    assert response.headers["access-control-allow-credentials"] == "true"
+
+
+def test_cors_preflight_allows_private_network() -> None:
+    client = _client()
+    response = client.options(
+        "/api/session",
+        headers = {
+            "Origin": "http://localhost:5173",
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "content-type",
+            "Access-Control-Request-Private-Network": "true",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"
+                            ] == "http://localhost:5173"
+    assert response.headers["access-control-allow-private-network"
+                            ] == "true"
+
+
+def test_cors_headers_on_session_post() -> None:
+    client = _client()
+    response = client.post(
+        "/api/session",
+        headers = {"Origin": "http://localhost:5173"},
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"
+                            ] == "http://localhost:5173"
+    assert response.headers["access-control-allow-credentials"] == "true"
+    assert "session_id" in response.json()
+
+
+def test_cors_allows_127_0_0_1_origin() -> None:
+    client = _client()
+    response = client.post(
+        "/api/session",
+        headers = {"Origin": "http://127.0.0.1:5173"},
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"
+                            ] == "http://127.0.0.1:5173"
+
+
+def test_cors_honors_environment_override(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv(
+        config.ARENA_CORS_ORIGINS_VAR,
+        "https://firewall.example.com",
+    )
+    client = _client()
+    response = client.post(
+        "/api/session",
+        headers = {"Origin": "https://firewall.example.com"},
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"
+                            ] == "https://firewall.example.com"
