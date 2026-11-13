@@ -42,7 +42,7 @@
     "@tanstack/react-query-devtools": "^5.91.1",
     "@types/d3-array": "^3.2.2",
     "@types/d3-scale": "^4.0.9",
-    "@types/node": "^24.10.2",
+    "@types/node": "^26.6.6",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
